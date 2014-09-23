@@ -56,7 +56,7 @@ typedef NET_LUID IF_LUID, *PIF_LUID;
 
 static NET_LUID getLuid(const char* name, struct Except* eh)
 {
-    printf("Looking for interface: %s", name);
+    printf("Looking for interface: \"%s\"\n", name);
 
     uint16_t ifName[IF_MAX_STRING_SIZE + 1] = {0};
     WinFail_check(eh,
@@ -64,7 +64,7 @@ static NET_LUID getLuid(const char* name, struct Except* eh)
         ifName, IF_MAX_STRING_SIZE + 1))
     );
 
-    printf("Converted name: %ls", ifName);
+    printf("Converted name: \"%ls\"\n", ifName);
 
     NET_LUID out;
     WinFail_check(eh, ConvertInterfaceAliasToLuid(ifName, &out));
