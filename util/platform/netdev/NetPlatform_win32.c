@@ -20,6 +20,7 @@
 
 #include <winsock2.h>
 #include <windows.h>
+#include <stdio.h>
 
 #define NET_LUID misalligned_NET_LUID
 #define PNET_LUID misalligned_PNET_LUID
@@ -55,10 +56,16 @@ typedef NET_LUID IF_LUID, *PIF_LUID;
 
 static NET_LUID getLuid(const char* name, struct Except* eh)
 {
+    printf("Looking for interface: %s", name);
+
     uint16_t ifName[IF_MAX_STRING_SIZE + 1] = {0};
     WinFail_check(eh,
-        (!MultiByteToWideChar(CP_UTF8, 0, name, strlen(name), ifName, IF_MAX_STRING_SIZE + 1))
+        (!MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, name, strlen(name),
+        ifName, IF_MAX_STRING_SIZE + 1))
     );
+
+    printf("Converted name: %ls", ifName);
+
     NET_LUID out;
     WinFail_check(eh, ConvertInterfaceAliasToLuid(ifName, &out));
     return out;
