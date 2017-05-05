@@ -17,4 +17,3 @@ Restart=always
 
 [Install]
 WantedBy=multi-user.target
-Also=cjdns-resume.service
